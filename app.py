@@ -140,7 +140,7 @@ def hello_world():
     output_image.save(buffered, format="JPEG")
     img_str = base64.b64encode(buffered.getvalue())
 
-    return jsonify("done")
+    return jsonify("dones")
 
 
 if __name__ == '__main__':
