@@ -133,14 +133,21 @@ def hello_world():
     x[:, :, 1] += IMAGENET_MEAN_RGB_VALUES[1]
     x[:, :, 2] += IMAGENET_MEAN_RGB_VALUES[0]
     x = np.clip(x, 0, 255).astype("uint8")
-    output_image = Image.fromarray(x)
-    plt.imshow(output_image)
-    plt.show()
+    output_image = Image.fromarray(x,"RGB")
+    import io
     buffered = BytesIO()
-    output_image.save(buffered, format="JPEG")
-    img_str = base64.b64encode(buffered.getvalue())
+    output_image.save(buffered, format="PNG")
+    img_str =base64.b64encode(buffered.getvalue()).decode()
 
-    return jsonify("dones")
+    #msg = base64.b64encode(img.getvalue())
+
+    #buf = io.BytesIO(msg)
+    #img = Image.open(buf)
+    #plt.imshow(img)
+    #plt.show()
+    print(img_str)
+    return jsonify(img_str)
+
 
 
 if __name__ == '__main__':
