@@ -144,7 +144,6 @@ def hello_world():
     
     img_str =base64.b64encode(buffered.getvalue()).decode()
 
-    import io
     buffered = BytesIO()
     output_image.save(buffered, format="PNG")
     img_str =base64.b64encode(buffered.getvalue()).decode()
