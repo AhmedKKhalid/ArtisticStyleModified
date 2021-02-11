@@ -9,9 +9,14 @@ from flask import Flask, jsonify
 from flask import request
 from io import BytesIO
 from tensorflow.python.framework.ops import disable_eager_execution
+import io
+
 disable_eager_execution()
 
+
 app = Flask(__name__)
+
+
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = False
 @app.route('/ArtisticStyle',methods=['POST','GET'])
 def hello_world():
@@ -123,7 +128,7 @@ def hello_world():
 
     x = np.random.uniform(0, 255, (1, IMAGE_HEIGHT, IMAGE_WIDTH, 3)) - 128.
 
-    for i in range(10):
+    for i in range(1):
         x, loss, info = fmin_l_bfgs_b(evaluator.loss, x.flatten(), fprime=evaluator.gradients, maxfun=20)
         print("Iteration %d completed with loss %d" % (i, loss))
 
@@ -133,15 +138,18 @@ def hello_world():
     x[:, :, 1] += IMAGENET_MEAN_RGB_VALUES[1]
     x[:, :, 2] += IMAGENET_MEAN_RGB_VALUES[0]
     x = np.clip(x, 0, 255).astype("uint8")
-    output_image = Image.fromarray(x)
-    plt.imshow(output_image)
-    plt.show()
+    output_image = Image.fromarray(x,"RGB")
     buffered = BytesIO()
-    output_image.save(buffered, format="JPEG")
-    img_str = base64.b64encode(buffered.getvalue())
+    output_image.save(buffered, format="PNG")
+    
+    img_str =base64.b64encode(buffered.getvalue()).decode()
 
+    print(img_str)
     return jsonify(img_str)
 
 
 if __name__ == '__main__':
     app.run()
+
+
+
